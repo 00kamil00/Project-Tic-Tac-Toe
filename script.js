@@ -5,19 +5,52 @@ const gameboard = (function gameboard() {
         return board
     }
 
-    const makeMove = function(index, sign) {
-        board[index] = sign
+    const makeMove = function(index, symbol) {
+        board[index] = symbol
     }
 
     return {getBoard, makeMove}
 })()
 
 
-function Player(name, sign) {
-    return {name, sign}
+
+function Player(name, symbol) {
+    return {name, symbol}
 }
+
+const player1 = Player("Tom", "X")
+const player2 = Player("Adam", "O")
+
 
 
 (function gameController() {
-    
+    const winningPattern = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ]
+
+    function checkWinner() {
+        const getBoard = gameboard.getBoard()
+        let hasWinner = false
+        let winnerSymbol = null
+        winningPattern.forEach((winPattern) => {
+            const pattern1 = getBoard[winPattern[0]]
+            const pattern2 = getBoard[winPattern[1]]
+            const pattern3 = getBoard[winPattern[2]]
+            if (pattern1 != "") {
+                if (pattern1 === pattern2  && pattern2 === pattern3) {
+                    hasWinner = true  
+                    winnerSymbol = pattern1                  
+                }
+            }
+        })
+
+        if (hasWinner) {
+            console.log(`player '${winnerSymbol}' has won the game`)
+        } else if (!hasWinner && !getBoard.includes("")) {
+            console.log('draw')
+        }
+
+    }    
 })()

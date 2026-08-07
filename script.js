@@ -34,6 +34,7 @@ const player2 = Player("Adam", "O")
 
 // -------------------- game controller --------------------
 const gameController = (function gameController() {
+    
     const winningPattern = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
         [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -41,12 +42,26 @@ const gameController = (function gameController() {
     ]
 
     let isGameOver = false
+    let hasWinner = false
     let activePlayer = player1
+    const border = document.querySelector('.game-status')
+
+
+    function setStatus() {
+        if (!isGameOver) {
+            border.textContent = `It's ${activePlayer.name} turn`
+        } else if (isGameOver) {
+            if (!hasWinner) {
+                border.textContent = "Game end, it's draw"
+            } else {
+                border.textContent = `Player: ${activePlayer.name} has won the game`
+            }
+        }
+    }
 
 
     function checkWinner() {
         const getBoard = gameboard.getBoard()
-        let hasWinner = false
         let winnerSymbol = null
         winningPattern.forEach((winPattern) => {
             const pattern1 = getBoard[winPattern[0]]
@@ -65,6 +80,7 @@ const gameController = (function gameController() {
             console.log(`player '${winnerSymbol}' has won the game`)
         } else if (!hasWinner && !getBoard.includes("")) {
             console.log('draw')
+            isGameOver = true
         }
     }
     
@@ -74,11 +90,13 @@ const gameController = (function gameController() {
         if (gameboard.getBoard()[index] === "") {
             gameboard.makeMove(index, activePlayer.symbol)
             checkWinner()
-            if (activePlayer === player1) {
-                activePlayer = player2
-            } else {
-                activePlayer = player1
-            }
+            if (!isGameOver && !hasWinner) {
+                if (activePlayer === player1) {
+                    activePlayer = player2
+                } else {
+                    activePlayer = player1
+                }
+            }    
         }
     }
 
@@ -87,10 +105,11 @@ const gameController = (function gameController() {
         gameboard.resetBoard()
         activePlayer = player1
         isGameOver = false
+        hasWinner = false
     }
 
 
-    return {checkWinner, playRound, resetGame}
+    return {setStatus, checkWinner, playRound, resetGame}
 })()
 // -------------------- game controller --------------------
 
@@ -100,7 +119,7 @@ const gameController = (function gameController() {
 const displayController = (function displayController() {
     
     const board = document.querySelector('.board')
-    const btn = document.querySelector('.btn')
+    const resetBtn = document.querySelector('.reset_btn')
     
 
     function updateDisplay() {
@@ -113,6 +132,7 @@ const displayController = (function displayController() {
             new_div.textContent = item
             board.appendChild(new_div)
         })
+        gameController.setStatus()
     }
 
     board.addEventListener("click", (e) => {
@@ -123,13 +143,16 @@ const displayController = (function displayController() {
         updateDisplay()
     })
     
-    btn.addEventListener("click", () => {
+    resetBtn.addEventListener("click", () => {
         gameController.resetGame()
         updateDisplay()
     })
 
-
+    
+    gameController.setStatus()
     updateDisplay()
+
+    
     return {updateDisplay}
 })()
 // -------------------- display controller --------------------

@@ -23,7 +23,7 @@ const player2 = Player("Adam", "O")
 
 
 
-(function gameController() {
+const gameController = (function gameController() {
     const winningPattern = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
         [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -51,6 +51,21 @@ const player2 = Player("Adam", "O")
         } else if (!hasWinner && !getBoard.includes("")) {
             console.log('draw')
         }
+    }
+    
+    let activePlayer = player1
+    function playRound(index) {
+        if (gameboard.getBoard()[index] === "") {
+            gameboard.makeMove(index, activePlayer.symbol)
+            checkWinner()
+            if (activePlayer === player1) {
+                activePlayer = player2
+            } else {
+                activePlayer = player1
+            }
+        }
+    }
 
-    }    
+    return {checkWinner, playRound}
+
 })()

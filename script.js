@@ -30,6 +30,9 @@ const gameController = (function gameController() {
         [0, 4, 8], [2, 4, 6]
     ]
 
+    let isGameOver = false
+
+
     function checkWinner() {
         const getBoard = gameboard.getBoard()
         let hasWinner = false
@@ -40,8 +43,9 @@ const gameController = (function gameController() {
             const pattern3 = getBoard[winPattern[2]]
             if (pattern1 != "") {
                 if (pattern1 === pattern2  && pattern2 === pattern3) {
-                    hasWinner = true  
+                    hasWinner = true
                     winnerSymbol = pattern1                  
+                    isGameOver = true
                 }
             }
         })
@@ -53,8 +57,10 @@ const gameController = (function gameController() {
         }
     }
     
+
     let activePlayer = player1
     function playRound(index) {
+        if (isGameOver) return
         if (gameboard.getBoard()[index] === "") {
             gameboard.makeMove(index, activePlayer.symbol)
             checkWinner()

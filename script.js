@@ -69,3 +69,34 @@ const gameController = (function gameController() {
     return {checkWinner, playRound}
 
 })()
+
+
+
+
+const displayController = (function displayController() {
+    
+    const board = document.querySelector('.board')
+    function updateDisplay() {
+        board.textContent = ""
+
+        gameboard.getBoard().forEach((item, index) => { 
+            const new_div = document.createElement('div')
+            new_div.classList.add('symbol')
+            new_div.dataset.index = index
+            new_div.textContent = item
+            board.appendChild(new_div)
+        })
+    }
+
+    board.addEventListener("click", (e) => {
+        const index = e.target.dataset.index
+        if (index === undefined) return
+
+        gameController.playRound(index)
+        updateDisplay()
+    })
+
+    updateDisplay()
+    return {updateDisplay}
+
+})()

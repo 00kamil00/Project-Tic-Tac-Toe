@@ -6,9 +6,32 @@ body {
 
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
+.game-status {
+    border: 2px solid black;
+    border-radius: 20px;
+
+    width: 700px;
+    height: 100px;
+
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.btn {
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    padding: 15px;
+    margin-bottom: 20px;
+} 
 
 .board {
     display: grid;

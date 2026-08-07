@@ -1,5 +1,6 @@
+// -------------------- gameboard --------------------
 const gameboard = (function gameboard() {
-    const board = ["", "", "", "", "", "", "", "", ""]
+    let board = ["", "", "", "", "", "", "", "", ""]
 
     const getBoard = function() {
         return board
@@ -9,20 +10,29 @@ const gameboard = (function gameboard() {
         board[index] = symbol
     }
 
-    return {getBoard, makeMove}
+    const resetBoard = function() {
+        board = ["", "", "", "", "", "", "", "", ""]
+    }
+
+
+    return {getBoard, makeMove, resetBoard}
 })()
+// -------------------- gameboard --------------------
 
 
 
+// -------------------- player --------------------
 function Player(name, symbol) {
     return {name, symbol}
 }
 
 const player1 = Player("Tom", "X")
 const player2 = Player("Adam", "O")
+// -------------------- player --------------------
 
 
 
+// -------------------- game controller --------------------
 const gameController = (function gameController() {
     const winningPattern = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -31,6 +41,7 @@ const gameController = (function gameController() {
     ]
 
     let isGameOver = false
+    let activePlayer = player1
 
 
     function checkWinner() {
@@ -57,8 +68,7 @@ const gameController = (function gameController() {
         }
     }
     
-
-    let activePlayer = player1
+    
     function playRound(index) {
         if (isGameOver) return
         if (gameboard.getBoard()[index] === "") {
@@ -72,16 +82,27 @@ const gameController = (function gameController() {
         }
     }
 
-    return {checkWinner, playRound}
 
+    function resetGame() {
+        gameboard.resetBoard()
+        activePlayer = player1
+        isGameOver = false
+    }
+
+
+    return {checkWinner, playRound, resetGame}
 })()
+// -------------------- game controller --------------------
 
 
 
-
+// -------------------- display controller --------------------
 const displayController = (function displayController() {
     
     const board = document.querySelector('.board')
+    const btn = document.querySelector('.btn')
+    
+
     function updateDisplay() {
         board.textContent = ""
 
@@ -101,8 +122,14 @@ const displayController = (function displayController() {
         gameController.playRound(index)
         updateDisplay()
     })
+    
+    btn.addEventListener("click", () => {
+        gameController.resetGame()
+        updateDisplay()
+    })
+
 
     updateDisplay()
     return {updateDisplay}
-
 })()
+// -------------------- display controller --------------------

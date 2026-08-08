@@ -25,9 +25,19 @@ body {
     align-items: center;
 } 
 
-.reset_btn {
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+
+.reset_btn,
+.start_btn {
     font-size: 1.3rem;
     font-weight: bold;
+
+    width: 170px;
+    height: 60px;
 
     padding: 15px;
     margin-bottom: 20px;
@@ -37,6 +47,10 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 200px);
     grid-template-rows: repeat(3, 200px);
+}
+
+.board.disabled {
+    cursor: not-allowed;
 }
 
 .symbol {

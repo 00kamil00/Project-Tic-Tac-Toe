@@ -41,10 +41,16 @@ const gameController = (function gameController() {
         [0, 4, 8], [2, 4, 6]
     ]
 
+    let isGameActive = false
     let isGameOver = false
     let hasWinner = false
     let activePlayer = player1
     const border = document.querySelector('.game-status')
+
+
+    function gameActivity() {
+        isGameActive = true
+    }
 
 
     function setStatus() {
@@ -87,18 +93,20 @@ const gameController = (function gameController() {
     
     function playRound(index) {
         if (isGameOver) return
-        if (gameboard.getBoard()[index] === "") {
-            gameboard.makeMove(index, activePlayer.symbol)
-            checkWinner()
-            if (!isGameOver && !hasWinner) {
-                if (activePlayer === player1) {
-                    activePlayer = player2
-                } else {
-                    activePlayer = player1
-                }
-            }    
+        if (isGameActive) {
+            if (gameboard.getBoard()[index] === "") {
+                gameboard.makeMove(index, activePlayer.symbol)
+                checkWinner()
+                if (!isGameOver && !hasWinner) {
+                    if (activePlayer === player1) {
+                            activePlayer = player2
+                    } else {
+                        activePlayer = player1
+                    }
+                }    
+            } 
         }
-    }
+    }   
 
 
     function resetGame() {
@@ -109,7 +117,7 @@ const gameController = (function gameController() {
     }
 
 
-    return {setStatus, checkWinner, playRound, resetGame}
+    return {gameActivity, setStatus, checkWinner, playRound, resetGame}
 })()
 // -------------------- game controller --------------------
 
@@ -120,6 +128,7 @@ const displayController = (function displayController() {
     
     const board = document.querySelector('.board')
     const resetBtn = document.querySelector('.reset_btn')
+    board.classList.add('disabled')
     
 
     function updateDisplay() {
@@ -151,7 +160,39 @@ const displayController = (function displayController() {
     
     gameController.setStatus()
     updateDisplay()
+    
+    
+    const startBtn = document.querySelector('.startBtn')
+    const p1_input = document.querySelector('#player1')
+    const p2_input = document.querySelector('#player2')
+    const dialog = document.querySelector('#my-dialog')
 
+    startBtn.addEventListener("click", () => {
+        board.classList.remove('disabled')
+        gameController.gameActivity()
+
+        const p1name = p1_input.value
+        const p2name = p2_input.value
+        
+        p1_input.value = ""
+        p2_input.value = ""
+
+
+        if (p1name === "") {
+            player1.name = "player1"
+        } else {
+            player1.name = p1name
+        }
+        if (p2name === "") {
+            player2.name = "player2"
+        } else {
+            player2.name = p2name
+        }
+        
+        dialog.close()
+        gameController.resetGame()
+        updateDisplay()
+    })
     
     return {updateDisplay}
 })()

@@ -9,7 +9,25 @@
 </head>
 <body>
     <div class="game-status"></div>
-    <button class="reset_btn">Restart Game</button>
+
+    <div class="buttons">
+        <button class="start_btn" command="show-modal" commandfor="my-dialog">Start Game</button>
+        <dialog id="my-dialog">
+
+            <label for="player1">Player 1 name:</label>
+            <input type="text" id="player1">
+
+            <label for="player2">Player 2 name:</label>
+            <input type="text" id="player2">
+
+            <button class="startBtn">Start</button>
+            <button command="close" commandfor="my-dialog">Close</button>
+            
+        </dialog>
+        
+        <button class="reset_btn">Restart Game</button>
+    </div>
+
     <div class="board"></div>
 </body>
 </html>

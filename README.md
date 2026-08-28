@@ -18,4 +18,4 @@ A browser-based Tic-Tac-Toe game built with vanilla JavaScript, HTML, and CSS as
 
 ## Live Demo
 
-[Live Demo Link]([https://your-username.github.io/your-repo-name/](https://00kamil00.github.io/Project-Tic-Tac-Toe/))
+[Live Demo Link] [https://00kamil00.github.io/Project-Tic-Tac-Toe/]
